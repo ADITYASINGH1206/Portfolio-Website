@@ -12,8 +12,7 @@ export default function HeroScroll() {
   });
 
   // Image animations
-  // Flips 360 degrees. At 180 degrees (0.5 progress), it shifts from grayscale to full color.
-  const rotateY = useTransform(scrollYProgress, [0, 1], [0, 360]);
+  // Shifts smoothly from grayscale to full color.
   const filter = useTransform(
     scrollYProgress, 
     [0, 0.4, 0.6, 1], 
@@ -21,16 +20,16 @@ export default function HeroScroll() {
   );
   
   // Phase 1 Text (Small Intro)
-  const intro1Opacity = useTransform(scrollYProgress, [0, 0.25, 0.4], [1, 1, 0]);
-  const intro1Y = useTransform(scrollYProgress, [0, 0.4], [0, -50]);
-  const intro1Scale = useTransform(scrollYProgress, [0, 0.4], [1, 0.9]);
+  const intro1Opacity = useTransform(scrollYProgress, [0, 0.2, 0.35], [1, 1, 0]);
+  const intro1Y = useTransform(scrollYProgress, [0, 0.35], [0, -50]);
+  const intro1Scale = useTransform(scrollYProgress, [0, 0.35], [1, 0.9]);
 
   // Phase 2 Text (Bigger Intro)
-  const intro2Opacity = useTransform(scrollYProgress, [0.4, 0.6, 1], [0, 1, 1]);
-  const intro2Y = useTransform(scrollYProgress, [0.4, 0.6], [50, 0]);
+  const intro2Opacity = useTransform(scrollYProgress, [0.45, 0.7, 1], [0, 1, 1]);
+  const intro2Y = useTransform(scrollYProgress, [0.45, 0.7], [50, 0]);
 
   return (
-    <div ref={containerRef} className="relative h-[300vh] w-full bg-background">
+    <div ref={containerRef} className="relative h-[200vh] w-full bg-background">
       {/* Sticky viewport container */}
       <div className="sticky top-0 h-screen w-full flex flex-col md:flex-row items-center justify-center gap-12 px-8 overflow-hidden max-w-6xl mx-auto">
         
@@ -72,7 +71,6 @@ export default function HeroScroll() {
         <div className="flex-1 flex justify-center md:justify-end w-full perspective-1000">
           <motion.div
             style={{ 
-              rotateY, 
               filter,
               transformStyle: "preserve-3d"
             }}

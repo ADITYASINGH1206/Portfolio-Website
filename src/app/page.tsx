@@ -1,5 +1,6 @@
-import BentoGrid from "@/components/BentoGrid";
+import ProjectsGrid from "@/components/ProjectsGrid";
 import TechStack from "@/components/TechStack";
+import StatsSection from "@/components/StatsSection";
 import HeroScroll from "@/components/HeroScroll";
 import ExperienceScroll from "@/components/ExperienceScroll";
 import SocialSidebar from "@/components/SocialSidebar";
@@ -18,18 +19,21 @@ export default function Home() {
       <HeroScroll />
       <ExperienceScroll />
 
-      {/* Bento Grid Section */}
+      {/* 2x2 Projects Grid Section */}
       <section id="projects" className="w-full py-24 bg-background relative z-10">
         <div className="flex flex-col items-center mb-16 px-4">
           <h2 className="text-4xl md:text-5xl font-extrabold text-foreground tracking-widest uppercase mb-4 text-center">
             Projects
           </h2>
         </div>
-        <BentoGrid />
+        <ProjectsGrid />
       </section>
 
+      {/* GitHub & DSA Stats Section */}
+      <StatsSection />
+
       {/* Comprehensive Tech Stack Section */}
-      <section id="tech-stack" className="w-full pb-24 border-t border-white/5 bg-[#09090b] relative z-10">
+      <section id="tech-stack" className="w-full pb-24 bg-[#09090b] relative z-10">
         <TechStack />
       </section>
       
