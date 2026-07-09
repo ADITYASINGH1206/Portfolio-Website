@@ -1,9 +1,12 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { GitHubCalendar } from "react-github-calendar";
+import dynamic from "next/dynamic";
 import { motion, useMotionValue, useTransform, animate, useInView } from "framer-motion";
 import { Code2, Trophy, Target, Award } from "lucide-react";
+
+// Dynamically import GitHubCalendar to prevent SSR hydration mismatches (timezone/date differences)
+const GitHubCalendar = dynamic(() => import("react-github-calendar").then((mod) => mod.GitHubCalendar), { ssr: false });
 
 const Counter = ({ from, to }: { from: number, to: number }) => {
   const count = useMotionValue(from);
