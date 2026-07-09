@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { 
+import {
   SiCplusplus, SiPython, SiJavascript, SiTypescript, SiC, SiHtml5,
   SiHuggingface, SiOpencv, SiPytorch, SiNumpy, SiPandas, SiScikitlearn,
   SiNextdotjs, SiReact, SiNodedotjs, SiExpress, SiFastapi, SiFlask, SiTailwindcss, SiFramer,
@@ -38,7 +38,6 @@ const techData: TechItem[] = [
   { name: "NumPy", color: "#013243", icon: SiNumpy },
   { name: "Pandas", color: "#150458", icon: SiPandas },
   { name: "Scikit-Learn", color: "#F7931E", icon: SiScikitlearn },
-  { name: "Next.js", color: "#FFFFFF", icon: SiNextdotjs },
   { name: "React", color: "#61DAFB", icon: SiReact },
   { name: "Node.js", color: "#339933", icon: SiNodedotjs },
   { name: "Express", color: "#FFFFFF", icon: SiExpress },
@@ -50,7 +49,6 @@ const techData: TechItem[] = [
   { name: "Kubernetes", color: "#326CE5", icon: SiKubernetes },
   { name: "Git", color: "#F05032", icon: SiGit },
   { name: "CI/CD", color: "#2088FF", icon: SiGithubactions },
-  { name: "Linux", color: "#FCC624", icon: SiLinux },
   { name: "Selenium", color: "#43B02A", icon: SiSelenium },
   { name: "Google Cloud", color: "#4285F4", icon: SiGooglecloud },
   { name: "PostgreSQL", color: "#4169E1", icon: SiPostgresql },
@@ -80,13 +78,13 @@ const TechCard = ({ tech }: { tech: TechItem }) => {
       className="relative group rounded-xl bg-zinc-900/40 border border-zinc-800/80 p-4 flex flex-col items-center justify-center gap-3 cursor-default w-[110px] h-[110px] sm:w-[120px] sm:h-[120px]"
     >
       {/* Background Glow */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 ease-in-out"
         style={{
           boxShadow: `inset 0 0 0 1px ${tech.color}, 0 0 20px -5px ${tech.color}40`,
         }}
       />
-      
+
       <motion.div
         variants={{
           idle: { scale: 1 },
@@ -95,7 +93,7 @@ const TechCard = ({ tech }: { tech: TechItem }) => {
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
         className="flex flex-col items-center justify-center gap-3 z-10 w-full"
       >
-        <motion.div 
+        <motion.div
           className="text-3xl filter-none"
           variants={{
             idle: { color: "rgba(161, 161, 170, 0.4)", filter: "saturate(0)" },
@@ -105,8 +103,8 @@ const TechCard = ({ tech }: { tech: TechItem }) => {
         >
           <tech.icon />
         </motion.div>
-        
-        <motion.span 
+
+        <motion.span
           className="font-mono text-[10px] sm:text-xs text-center leading-tight"
           variants={{
             idle: { color: "rgba(161, 161, 170, 0.4)" },
@@ -124,7 +122,7 @@ const TechCard = ({ tech }: { tech: TechItem }) => {
 export default function TechStack() {
   return (
     <div className="w-full py-24 overflow-hidden relative">
-      
+
       {/* Abstract background glow from the image */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-900/20 blur-[120px] rounded-full pointer-events-none -z-10" />
 
