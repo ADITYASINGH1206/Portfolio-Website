@@ -5,6 +5,7 @@ import HeroScroll from "@/components/HeroScroll";
 import ExperienceScroll from "@/components/ExperienceScroll";
 import SocialSidebar from "@/components/SocialSidebar";
 import TopNav from "@/components/TopNav";
+import ContactSection from "@/components/ContactSection";
 import React from "react";
 
 export default function Home() {
@@ -36,6 +37,9 @@ export default function Home() {
       <section id="tech-stack" className="w-full pb-24 bg-[#09090b] relative z-10">
         <TechStack />
       </section>
+      
+      {/* Contact Section */}
+      <ContactSection />
       
     </main>
   );
