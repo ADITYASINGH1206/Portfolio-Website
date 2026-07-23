@@ -16,34 +16,32 @@ interface Project {
 
 const projects: Project[] = [
   {
-    title: "High-Frequency Trading Engine",
-    description: "A low-latency C++ trading engine bypassing standard OS kernels for microsecond execution times. Integrated with real-time market data feeds.",
-    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1200&auto=format&fit=crop",
-    githubUrl: "#",
-    tags: ["C++", "Networking", "Low Latency"]
+    title: "Sentinel: On-Chain Verification Hub",
+    description: "Decentralized Web3 platform to combat misinformation using community consensus and immutable blockchain anchoring on the Sepolia Ethereum network.",
+    image: "https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=1200&auto=format&fit=crop",
+    githubUrl: "https://github.com/ADITYASINGH1206/SENTINEL",
+    tags: ["Web3", "React", "Node.js", "Ethereum"]
   },
   {
-    title: "Edge AI Facial Recognition",
-    description: "Deployed ArcFace models on NVIDIA Jetson Nano using DeepStream. Achieved 30FPS real-time processing for automated attendance systems.",
+    title: "Biometric Attendance System",
+    description: "High-performance edge-cloud classroom attendance system leveraging YOLOv8 ByteTrack and Face_Recognition for zero-lag surveillance edge cameras.",
     image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=1200&auto=format&fit=crop",
-    githubUrl: "#",
-    liveUrl: "#",
-    tags: ["Python", "DeepStream", "Computer Vision"]
+    githubUrl: "https://github.com/ADITYASINGH1206/MACRO_PROJECT_2",
+    tags: ["Python", "FastAPI", "YOLOv8", "Computer Vision"]
   },
   {
-    title: "Quantitative Analytics Dashboard",
-    description: "A full-stack React and FastAPI dashboard for visualizing complex statistical models and backtesting results from Pine Script strategies.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop",
-    githubUrl: "#",
-    liveUrl: "#",
-    tags: ["React", "FastAPI", "PostgreSQL"]
+    title: "OptiFlow (Task Optimization)",
+    description: "AI-driven cognitive interface for task management and predictive scheduling. Uses Gemini Flash generative AI to break down complex objectives into micro-tasks.",
+    image: "/optiflow_pure_ui.png",
+    githubUrl: "https://github.com/ADITYASINGH1206/Vibe2Ship26",
+    tags: ["React", "Node.js", "Generative AI", "FastAPI"]
   },
   {
-    title: "Distributed Task Scheduler",
-    description: "A highly concurrent, distributed task scheduling microservice built in Go and Node.js, utilizing Redis for message brokering and Kubernetes for orchestration.",
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop",
-    githubUrl: "#",
-    tags: ["Node.js", "Redis", "Docker"]
+    title: "TradingView Optimizer",
+    description: "A quantitative analytics and backtesting extension to optimize complex trading strategies and visualize statistical models directly within TradingView.",
+    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1200&auto=format&fit=crop",
+    githubUrl: "https://github.com/ADITYASINGH1206/TradingView-Optimizer",
+    tags: ["JavaScript", "Finance", "Data Analytics", "Chrome Extension"]
   }
 ];
 

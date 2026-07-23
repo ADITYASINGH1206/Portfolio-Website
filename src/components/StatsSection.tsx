@@ -26,9 +26,7 @@ const Counter = ({ from, to }: { from: number, to: number }) => {
 
 const platforms = [
   { name: "LeetCode", count: 800, icon: Code2, label: "Problems Solved", color: "text-yellow-500", suffix: "+" },
-  { name: "Codeforces", count: 1450, icon: Target, label: "Max Rating", color: "text-blue-500", suffix: "" },
-  { name: "CodeChef", count: 1800, icon: Trophy, label: "Max Rating", color: "text-orange-500", suffix: "" },
-  { name: "HackerRank", count: 5, icon: Award, label: "Stars in C++", color: "text-green-500", suffix: "★" }
+  { name: "LeetCode Rating", count: 1935, icon: Target, label: "Max Rating", color: "text-orange-500", suffix: "" },
 ];
 
 export default function StatsSection() {
@@ -72,7 +70,7 @@ export default function StatsSection() {
           </div>
 
           {/* DSA Platforms - Bottom Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto w-full">
             {platforms.map((platform) => (
               <div 
                 key={platform.name}
