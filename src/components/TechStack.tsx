@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 import {
   SiCplusplus, SiPython, SiJavascript, SiTypescript, SiC, SiHtml5,
   SiHuggingface, SiOpencv, SiPytorch, SiNumpy, SiPandas, SiScikitlearn,
-  SiNextdotjs, SiReact, SiNodedotjs, SiExpress, SiFastapi, SiFlask, SiTailwindcss, SiFramer,
-  SiDocker, SiKubernetes, SiGit, SiLinux, SiSelenium, SiGooglecloud,
+  SiReact, SiNodedotjs, SiExpress, SiFastapi, SiFlask, SiTailwindcss, SiFramer,
+  SiDocker, SiKubernetes, SiGit, SiSelenium, SiGooglecloud,
   SiPostgresql, SiMysql, SiMongodb, SiSqlite, SiRedis, SiSupabase,
   SiGithubactions
 } from "react-icons/si";

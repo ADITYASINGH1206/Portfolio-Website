@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
+import Image from "next/image";
 import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence } from "framer-motion";
 
 export default function HeroScroll() {
@@ -92,10 +93,11 @@ export default function HeroScroll() {
             className="relative w-64 h-80 md:w-80 md:h-96 rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
           >
             {/* Dummy placeholder portrait image */}
-            <img
+            <Image
               src="/aditya_kumar_singh.jpeg"
               alt="Aditya Profile Placeholder"
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
             />
             {/* Overlay gradient to blend into the dark theme a bit */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-transparent to-transparent opacity-80" />
