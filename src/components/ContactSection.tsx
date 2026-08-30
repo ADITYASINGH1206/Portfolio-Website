@@ -19,10 +19,10 @@ export default function ContactSection() {
           >
             <div>
               <h2 className="text-5xl md:text-7xl font-extrabold text-zinc-100 tracking-tight mb-6 font-sans">
-                Let's talk.
+                Let&apos;s talk.
               </h2>
               <p className="text-lg text-zinc-400 leading-relaxed max-w-md">
-                Have a project or need help? Fill out the form, and we'll get back to you soon.
+                Have a project or need help? Fill out the form, and we&apos;ll get back to you soon.
               </p>
             </div>
           </motion.div>

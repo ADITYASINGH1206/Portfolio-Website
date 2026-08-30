@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import dynamic from "next/dynamic";
 import { motion, useMotionValue, useTransform, animate, useInView } from "framer-motion";
-import { Code2, Trophy, Target, Award } from "lucide-react";
+import { Code2, Target } from "lucide-react";
 
 // Dynamically import GitHubCalendar to prevent SSR hydration mismatches (timezone/date differences)
 const GitHubCalendar = dynamic(() => import("react-github-calendar").then((mod) => mod.GitHubCalendar), { ssr: false });
@@ -60,7 +60,7 @@ export default function StatsSection() {
                 <GitHubCalendar 
                   username="adityasingh1206" 
                   colorScheme="dark"
-                  theme={githubTheme as any}
+                  theme={githubTheme as import("react-activity-calendar").ThemeInput}
                   fontSize={14}
                   blockSize={12}
                   blockMargin={4}
