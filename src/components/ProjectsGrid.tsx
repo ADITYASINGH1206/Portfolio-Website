@@ -4,53 +4,18 @@ import React from "react";
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
+import { Project } from "@/data/projects";
 
-interface Project {
-  title: string;
-  description: string;
-  image: string;
-  liveUrl?: string;
-  githubUrl?: string;
-  tags: string[];
+interface ProjectsGridProps {
+  projectsToShow: Project[];
 }
 
-const projects: Project[] = [
-  {
-    title: "Sentinel: On-Chain Verification Hub",
-    description: "Decentralized Web3 platform to combat misinformation using community consensus and immutable blockchain anchoring on the Sepolia Ethereum network.",
-    image: "https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=1200&auto=format&fit=crop",
-    githubUrl: "https://github.com/ADITYASINGH1206/SENTINEL",
-    tags: ["Web3", "React", "Node.js", "Ethereum"]
-  },
-  {
-    title: "Biometric Attendance System",
-    description: "High-performance edge-cloud classroom attendance system leveraging YOLOv8 ByteTrack and Face_Recognition for zero-lag surveillance edge cameras.",
-    image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=1200&auto=format&fit=crop",
-    githubUrl: "https://github.com/ADITYASINGH1206/MACRO_PROJECT_2",
-    tags: ["Python", "FastAPI", "YOLOv8", "Computer Vision"]
-  },
-  {
-    title: "OptiFlow (Task Optimization)",
-    description: "AI-driven cognitive interface for task management and predictive scheduling. Uses Gemini Flash generative AI to break down complex objectives into micro-tasks.",
-    image: "/optiflow_pure_ui.png",
-    githubUrl: "https://github.com/ADITYASINGH1206/Vibe2Ship26",
-    tags: ["React", "Node.js", "Generative AI", "FastAPI"]
-  },
-  {
-    title: "TradingView Optimizer",
-    description: "A quantitative analytics and backtesting extension to optimize complex trading strategies and visualize statistical models directly within TradingView.",
-    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1200&auto=format&fit=crop",
-    githubUrl: "https://github.com/ADITYASINGH1206/TradingView-Optimizer",
-    tags: ["JavaScript", "Finance", "Data Analytics", "Chrome Extension"]
-  }
-];
-
-export default function ProjectsGrid() {
+export default function ProjectsGrid({ projectsToShow }: ProjectsGridProps) {
   return (
     <div className="w-full max-w-6xl mx-auto px-4 md:px-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {projects.map((project, idx) => (
-          <motion.div 
+        {projectsToShow.map((project, idx) => (
+          <motion.div
             key={project.title}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -60,9 +25,9 @@ export default function ProjectsGrid() {
           >
             {/* Image Section */}
             <div className="w-full h-64 overflow-hidden relative">
-              <img 
-                src={project.image} 
-                alt={project.title} 
+              <img
+                src={project.image}
+                alt={project.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent" />
@@ -88,7 +53,7 @@ export default function ProjectsGrid() {
               {/* Links */}
               <div className="flex gap-4 mt-auto">
                 {project.githubUrl && (
-                  <a 
+                  <a
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -98,7 +63,7 @@ export default function ProjectsGrid() {
                   </a>
                 )}
                 {project.liveUrl && (
-                  <a 
+                  <a
                     href={project.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
