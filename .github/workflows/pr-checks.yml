@@ -1,8 +1,9 @@
 name: PR Checks
 
 on:
-  pull_request:
-    branches: [ "main" ]
+  pull_request_review:
+    types: [submitted]
+  workflow_dispatch:
 
 jobs:
   build-and-lint:
@@ -11,6 +12,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.pull_request.head.sha || github.ref }}
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
