@@ -121,7 +121,12 @@ export default function ExperienceScroll() {
                 <motion.div
                   key={activeExp.company}
                   initial={{ opacity: 0, scale: 0.82, filter: "blur(14px)", y: 15 }}
-                  animate={{ opacity: 0.22, scale: 1, filter: "blur(0px)", y: 0 }}
+                  animate={{ 
+                    opacity: activeExp.company === "Optimus" ? 0.36 : 0.22, 
+                    scale: 1, 
+                    filter: "blur(0px)", 
+                    y: 0 
+                  }}
                   exit={{ opacity: 0, scale: 1.12, filter: "blur(14px)", y: -15 }}
                   transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                   className="relative w-full h-full flex items-center justify-center"
@@ -129,8 +134,8 @@ export default function ExperienceScroll() {
                   <Image
                     src={activeExp.logo}
                     alt={`${activeExp.company} background watermark`}
-                    width={460}
-                    height={460}
+                    width={480}
+                    height={480}
                     priority
                     className="w-full h-full object-contain filter drop-shadow-[0_0_35px_rgba(255,255,255,0.08)]"
                   />
@@ -171,27 +176,6 @@ export default function ExperienceScroll() {
             <p className="mt-4 md:mt-6 text-foreground/50 font-light text-base md:text-lg">
               Scroll down to explore my professional background and systems architecture endeavors.
             </p>
-
-            {/* Active stage indicator pills on desktop */}
-            <div className="hidden md:flex flex-col gap-2 mt-8">
-              {experiences.map((exp, i) => (
-                <div 
-                  key={i}
-                  className={`flex items-center gap-3 text-xs font-mono transition-all duration-300 ${
-                    i === activeIndex ? "text-foreground font-semibold" : "text-foreground/30"
-                  }`}
-                >
-                  <span 
-                    className="w-1.5 h-1.5 rounded-full transition-all duration-300"
-                    style={{ 
-                      backgroundColor: i === activeIndex ? exp.accentColor : "currentColor",
-                      transform: i === activeIndex ? "scale(1.5)" : "scale(1)"
-                    }} 
-                  />
-                  <span>0{i + 1}. {exp.company}</span>
-                </div>
-              ))}
-            </div>
           </div>
 
           {/* Timeline List Column */}

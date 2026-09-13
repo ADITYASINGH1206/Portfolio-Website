@@ -6,8 +6,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-lint:
+  validate:
+    name: Build, Lint & Automated Tests
     runs-on: ubuntu-latest
+    # Only run when:
+    # 1. Manually triggered via workflow_dispatch, OR
+    # 2. PR review is approved by ADITYASINGH1206 (or repository owner)
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event_name == 'pull_request_review' &&
+        github.event.review.state == 'approved' &&
+        (github.event.review.user.login == github.repository_owner || github.event.review.user.login == 'ADITYASINGH1206')
+      )
 
     steps:
     - name: Checkout code
@@ -24,8 +35,15 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: TypeScript typecheck
+      run: npx tsc --noEmit
+
     - name: Run ESLint
       run: npm run lint
 
+    - name: Run automated integrity tests
+      run: npm test
+
     - name: Build Next.js app
       run: npm run build
+
