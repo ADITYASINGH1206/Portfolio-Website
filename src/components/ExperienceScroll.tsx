@@ -11,6 +11,7 @@ interface ExperienceItem {
   description: string;
   skills: string[];
   logo: string | null;
+  platforms?: { name: string; logo: string; color: string }[];
   accentColor: string;
   accentGlow: string;
   badgeBorder: string;
@@ -23,9 +24,9 @@ const experiences: ExperienceItem[] = [
     date: "Feb 2026 - Present",
     description: "Architecting zero-cloud Edge AI platforms running deep learning models natively on local silicon. Leading hardware-software co-design using DeepStream and ONNX to minimize inference latency.",
     skills: ["Computer Vision", "Edge Computing", "C++", "Python", "ONNX", "DeepStream"],
-    logo: "/images/experience/onekbyte-logo.png",
+    logo: "/images/experience/onekbyte.svg",
     accentColor: "#f97316",
-    accentGlow: "rgba(249, 115, 22, 0.24)",
+    accentGlow: "rgba(249, 115, 22, 0.26)",
     badgeBorder: "border-orange-500/40"
   },
   {
@@ -34,20 +35,24 @@ const experiences: ExperienceItem[] = [
     date: "May 2024 - Present",
     description: "Led architecture of high-performance quantitative tools. Optimized low-latency pipelines handling 10+ years of OHLC data. Engineered rule-based fractal indicators and robust Dockerized infrastructure.",
     skills: ["Pine Script", "Python", "JavaScript", "Docker", "REST APIs", "Manifest V3"],
-    logo: "/images/experience/optimus-logo.png",
+    logo: "/images/experience/optimus.svg",
     accentColor: "#2563eb",
-    accentGlow: "rgba(37, 99, 235, 0.28)",
+    accentGlow: "rgba(37, 99, 235, 0.32)",
     badgeBorder: "border-blue-500/40"
   },
   {
     role: "Algorithmic Strategy Developer",
     company: "Freelance",
     date: "Jun 2021 - Mar 2024",
-    description: "Delivered 300+ custom automation projects with 98% satisfaction. Developed low-latency MERN dashboards and advanced fractal algorithms using Pine Script and Python for market screening.",
+    description: "Delivered 300+ custom automation projects with 98% satisfaction across Upwork and Fiverr. Developed low-latency MERN dashboards and advanced fractal algorithms using Pine Script and Python for market screening.",
     skills: ["Node.js (MERN)", "Pine Script", "Python", "REST APIs", "Full-Stack"],
     logo: null,
+    platforms: [
+      { name: "Upwork", logo: "/images/experience/upwork.svg", color: "#14a800" },
+      { name: "Fiverr", logo: "/images/experience/fiverr.svg", color: "#1dbf73" }
+    ],
     accentColor: "#22c55e",
-    accentGlow: "rgba(34, 197, 94, 0.22)",
+    accentGlow: "rgba(34, 197, 94, 0.25)",
     badgeBorder: "border-emerald-500/40"
   }
 ];
@@ -122,14 +127,14 @@ export default function ExperienceScroll() {
                   key={activeExp.company}
                   initial={{ opacity: 0, scale: 0.82, filter: "blur(14px)", y: 15 }}
                   animate={{ 
-                    opacity: activeExp.company === "Optimus" ? 0.36 : 0.22, 
+                    opacity: activeExp.company === "Optimus" ? 0.38 : 0.28, 
                     scale: 1, 
                     filter: "blur(0px)", 
                     y: 0 
                   }}
                   exit={{ opacity: 0, scale: 1.12, filter: "blur(14px)", y: -15 }}
                   transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative w-full h-full flex items-center justify-center"
+                  className="relative w-full h-full flex items-center justify-center p-4"
                 >
                   <Image
                     src={activeExp.logo}
@@ -137,25 +142,47 @@ export default function ExperienceScroll() {
                     width={480}
                     height={480}
                     priority
+                    unoptimized
                     className="w-full h-full object-contain filter drop-shadow-[0_0_35px_rgba(255,255,255,0.08)]"
                   />
                 </motion.div>
               ) : (
-                /* Freelance / Algorithmic Engineering Watermark */
+                /* Freelance / Upwork & Fiverr Watermark */
                 <motion.div
                   key="freelance-watermark"
                   initial={{ opacity: 0, scale: 0.82, filter: "blur(14px)", y: 15 }}
-                  animate={{ opacity: 0.2, scale: 1, filter: "blur(0px)", y: 0 }}
+                  animate={{ opacity: 0.35, scale: 1, filter: "blur(0px)", y: 0 }}
                   exit={{ opacity: 0, scale: 1.12, filter: "blur(14px)", y: -15 }}
                   transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  className="w-full h-full flex items-center justify-center text-emerald-400 p-8"
+                  className="relative w-full h-full flex flex-col items-center justify-center gap-6 p-4"
                 >
-                  <svg className="w-full h-full max-w-[340px] max-h-[340px]" viewBox="0 0 200 200" fill="none" stroke="currentColor">
-                    <circle cx="100" cy="100" r="85" strokeWidth="2" strokeDasharray="6 6" className="opacity-40" />
-                    <circle cx="100" cy="100" r="55" strokeWidth="1.5" className="opacity-30" />
-                    <path d="M70 70L40 100L70 130M130 70L160 100L130 130M115 60L85 140" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
-                    <circle cx="100" cy="100" r="8" fill="currentColor" className="animate-pulse" />
-                  </svg>
+                  <div className="flex items-center justify-center gap-6 md:gap-10 w-full max-w-[440px]">
+                    <div className="w-[120px] h-[75px] md:w-[150px] md:h-[95px] flex items-center justify-center filter drop-shadow-[0_0_25px_rgba(20,168,0,0.45)]">
+                      <Image
+                        src="/images/experience/upwork.svg"
+                        alt="Upwork"
+                        width={150}
+                        height={95}
+                        className="w-full h-full object-contain"
+                        unoptimized
+                      />
+                    </div>
+                    <div className="h-16 w-[1px] bg-emerald-500/30" />
+                    <div className="w-[130px] h-[75px] md:w-[160px] md:h-[95px] flex items-center justify-center filter drop-shadow-[0_0_25px_rgba(29,191,115,0.45)]">
+                      <Image
+                        src="/images/experience/fiverr.svg"
+                        alt="Fiverr"
+                        width={160}
+                        height={95}
+                        className="w-full h-full object-contain"
+                        unoptimized
+                      />
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-950/40 text-emerald-400 font-mono text-[11px] tracking-widest uppercase">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>Top Rated Freelance Platforms</span>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -213,7 +240,7 @@ export default function ExperienceScroll() {
                     }}
                   />
                   
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-wrap items-center gap-3">
                     <span 
                       className="font-mono text-xs md:text-sm tracking-widest transition-colors duration-300"
                       style={{ color: isActive ? exp.accentColor : "inherit" }}
@@ -221,22 +248,38 @@ export default function ExperienceScroll() {
                       {exp.date}
                     </span>
 
-                    {/* Compact Company Logo Badge */}
+                    {/* Company Logo Badge or Platform Badges */}
                     {exp.logo ? (
-                      <div className={`relative w-6 h-6 rounded-md overflow-hidden border ${isActive ? exp.badgeBorder : "border-zinc-800"} bg-zinc-900/90 p-0.5 flex items-center justify-center transition-all duration-300 ${isActive ? "shadow-md scale-105" : "opacity-50"}`}>
+                      <div className={`relative w-7 h-7 rounded-md overflow-hidden border ${isActive ? exp.badgeBorder : "border-zinc-800"} bg-zinc-900/90 p-1 flex items-center justify-center transition-all duration-300 ${isActive ? "shadow-md scale-105" : "opacity-60"}`}>
                         <Image
                           src={exp.logo}
                           alt={`${exp.company} icon`}
-                          width={24}
-                          height={24}
+                          width={28}
+                          height={28}
                           className="object-contain w-full h-full"
+                          unoptimized
                         />
                       </div>
                     ) : (
-                      <div className={`w-6 h-6 rounded-md border ${isActive ? exp.badgeBorder : "border-zinc-800"} bg-zinc-900/90 p-1 flex items-center justify-center transition-all duration-300 ${isActive ? "shadow-md scale-105 text-emerald-400" : "opacity-50 text-zinc-500"}`}>
-                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                        </svg>
+                      <div className="flex items-center gap-1.5">
+                        {exp.platforms?.map(platform => (
+                          <div 
+                            key={platform.name}
+                            className={`relative px-2 py-0.5 rounded-md border ${isActive ? "border-emerald-500/40 bg-zinc-900/95" : "border-zinc-800 bg-zinc-900/50"} flex items-center gap-1.5 transition-all duration-300 ${isActive ? "shadow-sm scale-105" : "opacity-60"}`}
+                          >
+                            <div className="w-3.5 h-3.5 relative flex items-center justify-center">
+                              <Image 
+                                src={platform.logo} 
+                                alt={platform.name} 
+                                width={14} 
+                                height={14} 
+                                className="object-contain w-full h-full" 
+                                unoptimized 
+                              />
+                            </div>
+                            <span className="text-[10px] md:text-[11px] font-mono text-zinc-300 font-medium">{platform.name}</span>
+                          </div>
+                        ))}
                       </div>
                     )}
                   </div>

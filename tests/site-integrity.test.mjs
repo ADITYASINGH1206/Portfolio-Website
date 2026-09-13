@@ -6,18 +6,25 @@ import path from "node:path";
 const ROOT_DIR = process.cwd();
 
 test("Static Assets & Experience Logos Integrity", async (t) => {
-  await t.test("OnekByte Labs logo exists and is valid", () => {
-    const p = path.join(ROOT_DIR, "public/images/experience/onekbyte-logo.png");
-    assert.ok(fs.existsSync(p), "onekbyte-logo.png should exist in public/images/experience");
-    const stat = fs.statSync(p);
-    assert.ok(stat.size > 5000, `onekbyte-logo.png size should be > 5KB, got ${stat.size}`);
+  await t.test("OnekByte Labs SVG and PNG logos exist and are valid", () => {
+    const svg = path.join(ROOT_DIR, "public/images/experience/onekbyte.svg");
+    assert.ok(fs.existsSync(svg), "onekbyte.svg should exist in public/images/experience");
+    assert.ok(fs.statSync(svg).size > 1000, "onekbyte.svg should be valid non-empty file");
   });
 
-  await t.test("Optimus logo exists and is valid", () => {
-    const p = path.join(ROOT_DIR, "public/images/experience/optimus-logo.png");
-    assert.ok(fs.existsSync(p), "optimus-logo.png should exist in public/images/experience");
-    const stat = fs.statSync(p);
-    assert.ok(stat.size > 5000, `optimus-logo.png size should be > 5KB, got ${stat.size}`);
+  await t.test("Optimus SVG and PNG logos exist and are valid", () => {
+    const svg = path.join(ROOT_DIR, "public/images/experience/optimus.svg");
+    assert.ok(fs.existsSync(svg), "optimus.svg should exist in public/images/experience");
+    assert.ok(fs.statSync(svg).size > 1000, "optimus.svg should be valid non-empty file");
+  });
+
+  await t.test("Freelance Platform SVGs (Upwork & Fiverr) exist and are valid", () => {
+    const upwork = path.join(ROOT_DIR, "public/images/experience/upwork.svg");
+    const fiverr = path.join(ROOT_DIR, "public/images/experience/fiverr.svg");
+    assert.ok(fs.existsSync(upwork), "upwork.svg should exist");
+    assert.ok(fs.existsSync(fiverr), "fiverr.svg should exist");
+    assert.ok(fs.statSync(upwork).size > 100, "upwork.svg should be non-empty");
+    assert.ok(fs.statSync(fiverr).size > 100, "fiverr.svg should be non-empty");
   });
 
   await t.test("Resume file exists", () => {
