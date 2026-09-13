@@ -3,28 +3,58 @@ name: PR Checks
 on:
   pull_request_review:
     types: [submitted]
+  issue_comment:
+    types: [created]
   workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to test'
+        required: false
+        default: '5'
 
 jobs:
   validate:
     name: Build, Lint & Automated Tests
     runs-on: ubuntu-latest
     # Only run when:
-    # 1. Manually triggered via workflow_dispatch, OR
-    # 2. PR review is approved by ADITYASINGH1206 (or repository owner)
+    # 1. Manually triggered via workflow_dispatch by the repo owner, OR
+    # 2. PR review is approved by ADITYASINGH1206 (or repository owner), OR
+    # 3. A comment containing '/test' or 'run tests' is posted on the PR by ADITYASINGH1206
     if: >-
       github.event_name == 'workflow_dispatch' ||
       (
         github.event_name == 'pull_request_review' &&
         github.event.review.state == 'approved' &&
         (github.event.review.user.login == github.repository_owner || github.event.review.user.login == 'ADITYASINGH1206')
+      ) ||
+      (
+        github.event_name == 'issue_comment' &&
+        github.event.issue.pull_request &&
+        (github.event.comment.user.login == github.repository_owner || github.event.comment.user.login == 'ADITYASINGH1206') &&
+        (
+          contains(github.event.comment.body, '/test') ||
+          contains(github.event.comment.body, 'run tests') ||
+          contains(github.event.comment.body, '/run')
+        )
       )
 
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        ref: ${{ github.event.pull_request.head.sha || github.ref }}
+        fetch-depth: 0
+
+    - name: Checkout PR Head (if triggered from PR review or comment)
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        if [ "${{ github.event_name }}" = "pull_request_review" ]; then
+          gh pr checkout ${{ github.event.pull_request.number }}
+        elif [ "${{ github.event_name }}" = "issue_comment" ]; then
+          gh pr checkout ${{ github.event.issue.number }}
+        elif [ -n "${{ github.event.inputs.pr_number }}" ]; then
+          gh pr checkout ${{ github.event.inputs.pr_number }} || echo "Using checked out branch"
+        fi
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
@@ -46,4 +76,3 @@ jobs:
 
     - name: Build Next.js app
       run: npm run build
-
