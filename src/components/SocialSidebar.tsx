@@ -1,10 +1,12 @@
 import React from "react";
 import { FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { SiLeetcode } from "react-icons/si";
 import { Mail } from "lucide-react";
 
 export default function SocialSidebar() {
   const socials = [
     { name: "GitHub", icon: FaGithub, url: "https://github.com/adityasingh1206", hoverColor: "hover:text-white" },
+    { name: "LeetCode", icon: SiLeetcode, url: "https://leetcode.com/u/adityasingh1206/", hoverColor: "hover:text-[#FFA116]" },
     { name: "LinkedIn", icon: FaLinkedin, url: "https://www.linkedin.com/in/aditya-kumar-singh-93603b1b4/", hoverColor: "hover:text-[#0077b5]" },
     { name: "Instagram", icon: FaInstagram, url: "https://instagram.com/aditya__1206", hoverColor: "hover:text-[#E1306C]" },
     { name: "Email", icon: Mail, url: "mailto:24ad10ad5@mitsgwl.ac.in", hoverColor: "hover:text-[#EA4335]" },
@@ -20,6 +22,7 @@ export default function SocialSidebar() {
           rel="noopener noreferrer"
           className={`p-2 text-foreground/50 hover:scale-110 transition-all duration-300 ${social.hoverColor}`}
           title={social.name}
+          aria-label={social.name}
         >
           <social.icon className="w-6 h-6" />
         </a>

@@ -64,12 +64,15 @@ test("Core Application Routes & Components", async (t) => {
   const requiredFiles = [
     "src/app/page.tsx",
     "src/app/projects/page.tsx",
+    "src/app/api/leetcode/route.ts",
     "src/components/ExperienceScroll.tsx",
     "src/components/ProjectsGrid.tsx",
     "src/components/HeroScroll.tsx",
     "src/components/StatsSection.tsx",
     "src/components/ContactSection.tsx",
-    "src/components/TechStack.tsx"
+    "src/components/TechStack.tsx",
+    "src/components/SocialSidebar.tsx",
+    "src/components/BentoGrid.tsx"
   ];
 
   for (const file of requiredFiles) {
@@ -80,4 +83,39 @@ test("Core Application Routes & Components", async (t) => {
       assert.ok(stat.size > 100, `${file} should not be empty`);
     });
   }
+});
+
+test("LeetCode Integration & Profile Links Integrity", async (t) => {
+  const profileUrl = "https://leetcode.com/u/adityasingh1206/";
+
+  await t.test("API route handler exports GET and includes profile URL", () => {
+    const routePath = path.join(ROOT_DIR, "src/app/api/leetcode/route.ts");
+    assert.ok(fs.existsSync(routePath), "LeetCode route handler must exist");
+    const content = fs.readFileSync(routePath, "utf8");
+    assert.ok(content.includes("export async function GET"), "Route handler must export GET function");
+    assert.ok(content.includes(profileUrl), "Route handler must reference profile URL");
+    assert.ok(content.includes("totalSolved"), "Route handler must return totalSolved");
+    assert.ok(content.includes("rating"), "Route handler must return rating");
+  });
+
+  await t.test("StatsSection includes clickable LeetCode profile link and calls API", () => {
+    const statsPath = path.join(ROOT_DIR, "src/components/StatsSection.tsx");
+    const content = fs.readFileSync(statsPath, "utf8");
+    assert.ok(content.includes(profileUrl), "StatsSection must link to LeetCode profile URL");
+    assert.ok(content.includes('fetch("/api/leetcode")'), "StatsSection must call /api/leetcode endpoint");
+    assert.ok(content.includes('target="_blank"'), "LeetCode links must open in a new tab");
+  });
+
+  await t.test("SocialSidebar includes LeetCode profile link", () => {
+    const socialPath = path.join(ROOT_DIR, "src/components/SocialSidebar.tsx");
+    const content = fs.readFileSync(socialPath, "utf8");
+    assert.ok(content.includes(profileUrl), "SocialSidebar must link to LeetCode profile URL");
+    assert.ok(content.includes("SiLeetcode"), "SocialSidebar must render LeetCode icon");
+  });
+
+  await t.test("BentoGrid includes LeetCode profile link", () => {
+    const bentoPath = path.join(ROOT_DIR, "src/components/BentoGrid.tsx");
+    const content = fs.readFileSync(bentoPath, "utf8");
+    assert.ok(content.includes(profileUrl), "BentoGrid must link to LeetCode profile URL");
+  });
 });
