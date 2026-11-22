@@ -7,6 +7,7 @@ import SocialSidebar from "@/components/SocialSidebar";
 import TopNav from "@/components/TopNav";
 import ContactSection from "@/components/ContactSection";
 import OpenSourceSection from "@/components/OpenSourceSection";
+import SectionHeading from "@/components/SectionHeading";
 import React from "react";
 import Link from "next/link";
 import { projects } from "@/data/projects";
@@ -27,20 +28,20 @@ export default function Home() {
       <ExperienceScroll />
 
       {/* Projects Grid Section */}
-      <section id="projects" className="w-full py-24 bg-background relative z-10">
-        <div className="flex flex-col items-center mb-16 px-4">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-foreground tracking-widest uppercase mb-4 text-center">
-            Projects
-          </h2>
-        </div>
+      <section id="projects" className="w-full py-28 relative z-10">
+        <SectionHeading
+          eyebrow="Selected work"
+          title="Projects"
+          subtitle="AI agents, quantitative tooling and full-stack products, built end to end."
+        />
         <ProjectsGrid projectsToShow={featuredProjects} />
 
         <div className="flex justify-center mt-12">
           <Link
             href="/projects"
-            className="px-8 py-3 bg-white/5 border border-white/10 hover:border-primary/50 text-foreground font-mono tracking-widest uppercase text-sm rounded-lg transition-all duration-300 hover:bg-white/10"
+            className="px-6 py-2.5 bg-white/5 border border-white/10 hover:border-primary/50 text-foreground font-mono tracking-widest uppercase text-xs rounded-lg transition-all duration-300 hover:bg-white/10"
           >
-            View All Projects ({projects.length})
+            View all {projects.length} projects
           </Link>
         </div>
       </section>
@@ -52,7 +53,7 @@ export default function Home() {
       <StatsSection />
 
       {/* Comprehensive Tech Stack Section */}
-      <section id="tech-stack" className="w-full pb-24 bg-[#09090b] relative z-10">
+      <section id="tech-stack" className="w-full pb-24 relative z-10">
         <TechStack />
       </section>
 

@@ -21,11 +21,11 @@ export default function ProjectsPage() {
             href="/"
             className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 flex items-center gap-2 text-sm font-mono tracking-wider text-foreground/70 hover:text-primary transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" /> BACK
+            <ArrowLeft className="w-4 h-4" /> Back
           </Link>
 
-          <h1 className="text-4xl md:text-5xl font-extrabold text-foreground tracking-widest uppercase text-center">
-            All Projects
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-gradient text-center">
+            All projects
           </h1>
         </div>
 

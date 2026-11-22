@@ -22,8 +22,8 @@ const experiences: ExperienceItem[] = [
     role: "Chief Technology Officer",
     company: "OnekByte Labs",
     date: "Feb 2026 - Present",
-    description: "Architecting zero-cloud Edge AI platforms running deep learning models natively on local silicon. Leading hardware-software co-design using DeepStream and ONNX to minimize inference latency.",
-    skills: ["Computer Vision", "Edge Computing", "C++", "Python", "ONNX", "DeepStream"],
+    description: "Leading engineering at an early-stage DeepTech startup building ARGUS, an AI video-intelligence platform. Own the system architecture and the computer-vision inference pipeline, from model to product.",
+    skills: ["Computer Vision", "System Design", "C++", "Python", "ONNX", "DeepStream"],
     logo: "/images/experience/onekbyte.svg",
     accentColor: "#f97316",
     accentGlow: "rgba(249, 115, 22, 0.26)",
@@ -85,7 +85,7 @@ export default function ExperienceScroll() {
   const activeExp = experiences[activeIndex];
 
   return (
-    <div ref={containerRef} className="relative h-[260vh] w-full bg-[#09090b]">
+    <div id="experience" ref={containerRef} className="relative h-[260vh] w-full">
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden max-w-6xl mx-auto px-4 md:px-12 relative">
         
         {/* ================= BACKGROUND COMPANY LOGO ANIMATION LAYER ================= */}
@@ -194,14 +194,14 @@ export default function ExperienceScroll() {
           
           {/* Header Column */}
           <div className="md:w-1/3 flex flex-col justify-center">
-            <h2 className="font-mono text-primary text-sm tracking-widest uppercase mb-4">
+            <h2 className="font-mono text-primary text-[11px] tracking-[0.2em] uppercase mb-4">
               Career Timeline
             </h2>
-            <h3 className="text-4xl md:text-5xl font-extrabold text-foreground tracking-tighter">
+            <h3 className="text-4xl md:text-5xl font-extrabold tracking-tighter text-gradient">
               Experience.
             </h3>
             <p className="mt-4 md:mt-6 text-foreground/50 font-light text-base md:text-lg">
-              Scroll down to explore my professional background and systems architecture endeavors.
+              Where I have built and shipped.
             </p>
           </div>
 
