@@ -58,6 +58,7 @@ test("Projects Data Integrity", async () => {
     }
   }
   assert.ok(count > 0, "Should have verified project images");
+  assert.ok(count >= 8, `Should have at least 8 projects, found ${count}`);
 });
 
 test("Core Application Routes & Components", async (t) => {
@@ -67,12 +68,15 @@ test("Core Application Routes & Components", async (t) => {
     "src/app/api/leetcode/route.ts",
     "src/components/ExperienceScroll.tsx",
     "src/components/ProjectsGrid.tsx",
+    "src/components/OpenSourceSection.tsx",
     "src/components/HeroScroll.tsx",
     "src/components/StatsSection.tsx",
     "src/components/ContactSection.tsx",
     "src/components/TechStack.tsx",
     "src/components/SocialSidebar.tsx",
-    "src/components/BentoGrid.tsx"
+    "src/components/BentoGrid.tsx",
+    "src/data/projects.ts",
+    "src/data/openSource.ts"
   ];
 
   for (const file of requiredFiles) {
@@ -118,4 +122,22 @@ test("LeetCode Integration & Profile Links Integrity", async (t) => {
     const content = fs.readFileSync(bentoPath, "utf8");
     assert.ok(content.includes(profileUrl), "BentoGrid must link to LeetCode profile URL");
   });
+});
+
+test("Open Source Section & GitHub Contributions Integrity", async () => {
+  const openSourceFilePath = path.join(ROOT_DIR, "src/data/openSource.ts");
+  assert.ok(fs.existsSync(openSourceFilePath), "src/data/openSource.ts must exist");
+
+  const content = fs.readFileSync(openSourceFilePath, "utf8");
+  assert.ok(content.includes("openSourceContributions"), "Must export openSourceContributions array");
+  assert.ok(content.includes("pymc-devs/pytensor"), "Must feature PyTensor contribution");
+  assert.ok(content.includes("openvinotoolkit/openvino"), "Must feature OpenVINO contribution");
+  assert.ok(content.includes("kestra-io/kestra"), "Must feature Kestra core contribution");
+  assert.ok(content.includes("kestra-io/plugin-aws"), "Must feature Kestra AWS plugin");
+  assert.ok(content.includes("kestra-io/plugin-azure"), "Must feature Kestra Azure plugin");
+  assert.ok(!content.includes("DeepFake"), "Deepfake research should not be included");
+
+  const pagePath = path.join(ROOT_DIR, "src/app/page.tsx");
+  const pageContent = fs.readFileSync(pagePath, "utf8");
+  assert.ok(pageContent.includes("OpenSourceSection"), "Home page must include OpenSourceSection");
 });
