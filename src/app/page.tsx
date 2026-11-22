@@ -6,12 +6,13 @@ import ExperienceScroll from "@/components/ExperienceScroll";
 import SocialSidebar from "@/components/SocialSidebar";
 import TopNav from "@/components/TopNav";
 import ContactSection from "@/components/ContactSection";
+import OpenSourceSection from "@/components/OpenSourceSection";
 import React from "react";
 import Link from "next/link";
 import { projects } from "@/data/projects";
 
 export default function Home() {
-  // Show only the first 4 projects on the homepage
+  // Show the top 4 flagship projects on the homepage
   const featuredProjects = projects.slice(0, 4);
 
   return (
@@ -39,10 +40,13 @@ export default function Home() {
             href="/projects"
             className="px-8 py-3 bg-white/5 border border-white/10 hover:border-primary/50 text-foreground font-mono tracking-widest uppercase text-sm rounded-lg transition-all duration-300 hover:bg-white/10"
           >
-            View All Projects
+            View All Projects ({projects.length})
           </Link>
         </div>
       </section>
+
+      {/* Open Source Contributions Section */}
+      <OpenSourceSection />
 
       {/* GitHub & DSA Stats Section */}
       <StatsSection />
