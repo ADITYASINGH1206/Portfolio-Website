@@ -47,7 +47,7 @@ export default function Home() {
       </section>
 
       {/* Open Source Contributions Section */}
-      <OpenSourceSection />
+      <OpenSourceSection isPreview />
 
       {/* GitHub & DSA Stats Section */}
       <StatsSection />

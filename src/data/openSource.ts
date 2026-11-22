@@ -128,6 +128,13 @@ export const openSourceContributions: OpenSourceContribution[] = [
   },
 ];
 
+// 1 representative flagship contribution per major ecosystem for the homepage preview
+export const featuredContributions: OpenSourceContribution[] = [
+  openSourceContributions.find((c) => c.category === "OpenVINO")!,
+  openSourceContributions.find((c) => c.category === "PyTensor")!,
+  openSourceContributions.find((c) => c.category === "Kestra")!,
+].filter(Boolean);
+
 export function formatMergedDate(iso: string): string {
   return new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", {
     month: "short",
