@@ -130,10 +130,12 @@ test("Open Source Section & GitHub Contributions Integrity", async () => {
 
   const content = fs.readFileSync(openSourceFilePath, "utf8");
   assert.ok(content.includes("openSourceContributions"), "Must export openSourceContributions array");
+  assert.ok(content.includes("pymc-devs/pytensor"), "Must feature PyTensor contribution");
   assert.ok(content.includes("openvinotoolkit/openvino"), "Must feature OpenVINO contribution");
   assert.ok(content.includes("kestra-io/kestra"), "Must feature Kestra core contribution");
   assert.ok(content.includes("kestra-io/plugin-aws"), "Must feature Kestra AWS plugin");
   assert.ok(content.includes("kestra-io/plugin-azure"), "Must feature Kestra Azure plugin");
+  assert.ok(!content.includes("DeepFake"), "Deepfake research should not be included");
 
   const pagePath = path.join(ROOT_DIR, "src/app/page.tsx");
   const pageContent = fs.readFileSync(pagePath, "utf8");
