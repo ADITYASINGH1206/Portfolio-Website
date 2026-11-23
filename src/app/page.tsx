@@ -41,7 +41,7 @@ export default function Home() {
             href="/projects"
             className="px-6 py-2.5 bg-white/5 border border-white/10 hover:border-primary/50 text-foreground font-mono tracking-widest uppercase text-xs rounded-lg transition-all duration-300 hover:bg-white/10"
           >
-            View all {projects.length} projects
+            Show all projects
           </Link>
         </div>
       </section>
