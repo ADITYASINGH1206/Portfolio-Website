@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 export default function HeroScroll() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -31,7 +32,7 @@ export default function HeroScroll() {
   );
 
   return (
-    <div ref={containerRef} className="relative h-[200vh] w-full bg-background">
+    <div id="about" ref={containerRef} className="relative h-[200vh] w-full">
       {/* Sticky viewport container */}
       <div className="sticky top-0 h-screen w-full flex flex-col md:flex-row items-center justify-center gap-12 px-8 overflow-hidden max-w-6xl mx-auto">
 
@@ -49,15 +50,30 @@ export default function HeroScroll() {
                 className="absolute inset-0 flex flex-col justify-center text-center md:text-left"
               >
                 <div>
-                  <h2 className="font-mono text-primary text-sm md:text-base tracking-widest uppercase mb-4">
-                    Software Developer | Data Science | Quant
-                  </h2>
-                  <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter mb-4 text-foreground">
+                  <span className="inline-flex items-center gap-2 px-3 py-1 mb-6 rounded-full border border-primary/20 bg-primary/10 font-mono text-[11px] uppercase tracking-[0.2em] text-primary">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                    Software Developer · Data Science · Quant
+                  </span>
+                  <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter mb-5 text-gradient">
                     Aditya Kumar Singh
                   </h1>
-                  <p className="text-lg text-foreground/70 font-light">
-                    Engineering high-performance solutions.
+                  <p className="text-lg md:text-xl text-foreground/65 font-light max-w-lg mx-auto md:mx-0">
+                    I build AI products and developer tools, and ship fixes to open-source projects like PyTensor, OpenVINO and Kestra.
                   </p>
+                  <div className="mt-8 flex flex-wrap justify-center md:justify-start gap-3">
+                    <Link
+                      href="/#projects"
+                      className="rounded-lg bg-primary px-5 py-2.5 font-mono text-xs font-bold uppercase tracking-widest text-black transition-opacity hover:opacity-90"
+                    >
+                      View projects
+                    </Link>
+                    <Link
+                      href="/#open-source"
+                      className="rounded-lg border border-white/15 px-5 py-2.5 font-mono text-xs uppercase tracking-widest text-foreground/80 transition-colors hover:border-primary/50 hover:text-foreground"
+                    >
+                      Open source
+                    </Link>
+                  </div>
                 </div>
               </motion.div>
             ) : (
@@ -70,11 +86,11 @@ export default function HeroScroll() {
                 className="absolute inset-0 flex flex-col justify-center text-center md:text-left"
               >
                 <div>
-                  <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-foreground">
-                    Bridging Hardware & Web.
+                  <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6 text-gradient">
+                    From algorithms to production.
                   </h2>
                   <p className="text-lg md:text-xl text-foreground/80 font-light leading-relaxed max-w-xl mx-auto md:mx-0">
-                    AI & Data Science undergraduate and competitive programmer with a rigorous foundation in algorithms and systems engineering. Architect of real-time edge computer vision pipelines, Chrome browser extensions, and quantitative backtesting frameworks built across C++, Python, and full-stack web layers.
+                    AI & Data Science undergraduate and competitive programmer. I build AI products, browser extensions and quantitative backtesting tools in Python, TypeScript and C++, and contribute fixes and features upstream to PyTensor, OpenVINO and Kestra.
                   </p>
                 </div>
               </motion.div>
@@ -92,10 +108,9 @@ export default function HeroScroll() {
             }}
             className="relative w-64 h-80 md:w-80 md:h-96 rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
           >
-            {/* Dummy placeholder portrait image */}
-            <Image
+                        <Image
               src="/aditya_kumar_singh.jpeg"
-              alt="Aditya Profile Placeholder"
+              alt="Portrait of Aditya Kumar Singh"
               fill
               className="object-cover"
             />

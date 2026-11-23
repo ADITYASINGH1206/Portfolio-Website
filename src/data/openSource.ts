@@ -1,68 +1,46 @@
+export type OpenSourceCategory = "PyTensor" | "OpenVINO" | "Kestra";
+
 export interface OpenSourceContribution {
   id: string;
   repo: string;
   repoUrl: string;
   prNumber: number;
   prUrl: string;
+  /** What the PR did, in one line. Reads like a changelog entry. */
   title: string;
-  headline: string;
+  /** One plain-English sentence on the outcome. */
+  summary: string;
+  /** What was broken or missing. */
   problem: string;
-  solution: string;
-  category: "PyTensor" | "OpenVINO" | "Kestra";
+  /** What the PR changed to fix it. */
+  fix: string;
+  category: OpenSourceCategory;
   status: "merged";
-  date: string;
+  /** ISO date the PR was merged. */
+  mergedOn: string;
   technologies: string[];
-  impactBadge: string;
+  /** Short label for the kind of change. */
+  kind: string;
 }
 
+// Newest first. Every entry below was checked against the merged PR on GitHub.
 export const openSourceContributions: OpenSourceContribution[] = [
-  {
-    id: "pytensor-variance-ddof",
-    repo: "pymc-devs/pytensor",
-    repoUrl: "https://github.com/pymc-devs/pytensor",
-    prNumber: 2495,
-    prUrl: "https://github.com/pymc-devs/pytensor/pull/2495",
-    title: "Multi-Axis Variance & Standard Deviation Normalization",
-    headline: "Fixed mathematical divisor normalization across multi-dimensional tensor reductions with ddof > 0",
-    problem: "PyTensor subtracted degrees of freedom from each dimension individually inside an iterative reduction loop, compounding divisor errors across multi-axis variance operations.",
-    solution: "Normalized arbitrary axis configurations using variadic dimensional products, ensuring mathematically rigorous N - ddof sample variance scaling consistent with NumPy.",
-    category: "PyTensor",
-    status: "merged",
-    date: "Oct 2026",
-    technologies: ["Python", "PyTensor", "Symbolic Math", "NumPy", "Graph Compiler"],
-    impactBadge: "Core Math Engine",
-  },
   {
     id: "openvino-constant-shape-cache",
     repo: "openvinotoolkit/openvino",
     repoUrl: "https://github.com/openvinotoolkit/openvino",
     prNumber: 39903,
     prUrl: "https://github.com/openvinotoolkit/openvino/pull/39903",
-    title: "Constant Operator Shape-Size Caching in Core Runtime",
-    headline: "Cached shape dimensions to eliminate repeated recalculations during deep learning tensor inference",
-    problem: "Graph execution repeatedly invoked shape_size(m_shape) on Constant operator nodes during shape inference, introducing avoidable CPU overhead in hot inference paths.",
-    solution: "Refactored ov::op::v0::Constant to cache the scalar element count alongside its shape descriptor, accelerating graph compilation and inference validation.",
+    title: "Cache the element count on ov::op::v0::Constant",
+    summary: "Constant nodes no longer re-walk their shape every time the runtime asks for a size.",
+    problem:
+      "shape_size(m_shape) was recomputed in allocate_buffer(), get_byte_size(), evaluate() and other hot paths, an O(N) pass over the dimensions each call.",
+    fix: "Computed the count once per constructor and refreshed it when deserialization changes the shape. Added tests for copies, reshapes and overflowing shapes.",
     category: "OpenVINO",
     status: "merged",
-    date: "Nov 2026",
-    technologies: ["C++", "OpenVINO Core", "Runtime Optimization", "Inference Engine"],
-    impactBadge: "Core Runtime",
-  },
-  {
-    id: "kestra-core-indent-filter",
-    repo: "kestra-io/kestra",
-    repoUrl: "https://github.com/kestra-io/kestra",
-    prNumber: 21842,
-    prUrl: "https://github.com/kestra-io/kestra/pull/21842",
-    title: "Pebble Template Engine Numeric Coercion in Indent Filters",
-    headline: "Hardened dynamic indentation filters against generic Number types in code generation templates",
-    problem: "Templating filters in Kestra Core failed with ClassCastException when indentation width arguments were provided as generic Numbers rather than primitive Integers.",
-    solution: "Added safe Number type coercion across IndentFilter and NindentFilter, ensuring reliable multi-line YAML and configuration generation in workflow pipelines.",
-    category: "Kestra",
-    status: "merged",
-    date: "Oct 2026",
-    technologies: ["Java", "Pebble Engine", "Orchestration", "YAML Generation"],
-    impactBadge: "Core Engine",
+    mergedOn: "2026-11-20",
+    technologies: ["C++", "OpenVINO Core", "Runtime"],
+    kind: "Performance",
   },
   {
     id: "kestra-aws-dynamodb-batch",
@@ -70,15 +48,15 @@ export const openSourceContributions: OpenSourceContribution[] = [
     repoUrl: "https://github.com/kestra-io/plugin-aws",
     prNumber: 869,
     prUrl: "https://github.com/kestra-io/plugin-aws/pull/869",
-    title: "Native DynamoDB BatchWriteItem Task for High-Throughput Ingestion",
-    headline: "Engineered high-throughput batch ingestion task with chunking and exponential backoff",
-    problem: "Enterprise workflows lacked an atomic, high-volume DynamoDB batch writer task, forcing inefficient sequential writes for large dataset synchronization.",
-    solution: "Implemented BatchWriteItem supporting automated 25-item batch partitioning, concurrent flush buffers, and exponential backoff retry for unprocessed items.",
+    title: "New DynamoDB BatchWriteItem task",
+    summary: "Load large datasets into DynamoDB from a flow, from inline items or a file in Kestra storage.",
+    problem: "Kestra had no task for high-volume DynamoDB writes, so bulk loads had no chunking or retry handling.",
+    fix: "Splits writes into DynamoDB's 25-item batches, supports puts and deletes in one run, and retries unprocessed items with exponential backoff and jitter. Emits a written-items metric.",
     category: "Kestra",
     status: "merged",
-    date: "Nov 2026",
-    technologies: ["Java", "AWS SDK v2", "DynamoDB", "Cloud Storage"],
-    impactBadge: "New Feature",
+    mergedOn: "2026-11-03",
+    technologies: ["Java", "AWS SDK v2", "DynamoDB"],
+    kind: "New feature",
   },
   {
     id: "kestra-azure-blob-storage",
@@ -86,15 +64,33 @@ export const openSourceContributions: OpenSourceContribution[] = [
     repoUrl: "https://github.com/kestra-io/plugin-azure",
     prNumber: 390,
     prUrl: "https://github.com/kestra-io/plugin-azure/pull/390",
-    title: "Azure Blob Storage Collision Prevention on Concurrent Uploads",
-    headline: "Eliminated race-condition filename collisions during multi-file concurrent cloud uploads",
-    problem: "Parallel execution tasks uploading multiple files to Azure containers experienced intermittent name collisions and inconsistent blob key normalization.",
-    solution: "Enforced deterministic blob naming conventions and collision guards, ensuring robust parallel multi-file transfers in enterprise cloud workflows.",
+    title: "Consistent blob names on multi-file Azure uploads",
+    summary: "Multi-file uploads now land in predictable paths, and same-named files can no longer overwrite each other.",
+    problem:
+      "The first file was written to the literal destination name while the rest got their filenames. Same-named files from different folders silently overwrote one another.",
+    fix: "Every file is written to destination/<filename>. Duplicate targets are caught before any upload starts, and rendered JSON file lists are now parsed correctly.",
     category: "Kestra",
     status: "merged",
-    date: "Nov 2026",
-    technologies: ["Java", "Azure SDK", "Blob Storage", "Concurrency"],
-    impactBadge: "Cloud Storage",
+    mergedOn: "2026-11-02",
+    technologies: ["Java", "Azure SDK", "Blob Storage"],
+    kind: "Bug fix",
+  },
+  {
+    id: "kestra-core-indent-filter",
+    repo: "kestra-io/kestra",
+    repoUrl: "https://github.com/kestra-io/kestra",
+    prNumber: 21842,
+    prUrl: "https://github.com/kestra-io/kestra/pull/21842",
+    title: "Accept any Number in the indent and nindent filters",
+    summary: "Templates that pass a flow input as the indent width now render instead of crashing.",
+    problem:
+      "The Pebble filters cast the amount straight to Long. Values from INT flow inputs arrive as Integer, which threw a ClassCastException.",
+    fix: "Accepts any Number type, and rejects non-numeric input with a clear error message. Backported to the 2.0 and 1.3 release lines.",
+    category: "Kestra",
+    status: "merged",
+    mergedOn: "2026-10-27",
+    technologies: ["Java", "Pebble", "Kestra Core"],
+    kind: "Bug fix",
   },
   {
     id: "kestra-ai-anthropic-tokens",
@@ -102,14 +98,48 @@ export const openSourceContributions: OpenSourceContribution[] = [
     repoUrl: "https://github.com/kestra-io/plugin-ai",
     prNumber: 517,
     prUrl: "https://github.com/kestra-io/plugin-ai/pull/517",
-    title: "Anthropic Claude Token Resolution & Configuration Fallback",
-    headline: "Stabilized dynamic token limit handling across autonomous LLM pipeline tasks",
-    problem: "Anthropic model tasks crashed during execution when maxTokens was either omitted by dynamic expressions or missing model-specific configuration defaults.",
-    solution: "Implemented dynamic token resolution with fallback cascading from global configuration to model ceilings, ensuring fault-tolerant agent execution.",
+    title: "Fix maxTokens resolution for Anthropic models",
+    summary: "The token limit users configure is now the one that reaches the Anthropic API.",
+    problem:
+      "A duplicate builder call overwrote the provider-level maxTokens with null, so configured limits were never sent.",
+    fix: "Uses the provider value first and falls back to the configuration value. The thinking budget is now validated against the resolved limit. Covered by a WireMock regression test.",
     category: "Kestra",
     status: "merged",
-    date: "Oct 2026",
-    technologies: ["Java", "Anthropic API", "LLM Orchestration", "AI Plugins"],
-    impactBadge: "AI & LLMs",
+    mergedOn: "2026-10-26",
+    technologies: ["Java", "Anthropic API", "LLM"],
+    kind: "Bug fix",
+  },
+  {
+    id: "pytensor-variance-ddof",
+    repo: "pymc-devs/pytensor",
+    repoUrl: "https://github.com/pymc-devs/pytensor",
+    prNumber: 2495,
+    prUrl: "https://github.com/pymc-devs/pytensor/pull/2495",
+    title: "Correct multi-axis variance and std when ddof > 0",
+    summary: "pt.var and pt.std now match NumPy when reducing over more than one axis.",
+    problem:
+      "ddof was subtracted from each reduced axis separately. On a 2×3 array the divisor came out as 2 instead of 5, returning 8.75 instead of 3.5.",
+    fix: "The divisor is now N − ddof, with N taken as the product of all reduced axes. Added regression tests for multi-axis, negative-axis and dtype cases.",
+    category: "PyTensor",
+    status: "merged",
+    mergedOn: "2026-10-18",
+    technologies: ["Python", "PyTensor", "NumPy"],
+    kind: "Bug fix",
   },
 ];
+
+// 1 representative flagship contribution per major ecosystem for the homepage preview
+export const featuredContributions: OpenSourceContribution[] = [
+  openSourceContributions.find((c) => c.category === "OpenVINO")!,
+  openSourceContributions.find((c) => c.category === "PyTensor")!,
+  openSourceContributions.find((c) => c.category === "Kestra")!,
+].filter(Boolean);
+
+export function formatMergedDate(iso: string): string {
+  return new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}

@@ -1,222 +1,246 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { GitMerge, ExternalLink, GitPullRequest, Cpu, Variable, Layers, CheckCircle2, AlertCircle } from "lucide-react";
+import { GitMerge, ExternalLink, GitPullRequest } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
-import { openSourceContributions } from "@/data/openSource";
+import {
+  openSourceContributions,
+  featuredContributions,
+  formatMergedDate,
+  type OpenSourceCategory,
+} from "@/data/openSource";
+import SectionHeading from "@/components/SectionHeading";
 
-type FilterCategory = "All" | "PyTensor" | "OpenVINO" | "Kestra";
+type Filter = "All" | OpenSourceCategory;
 
-export default function OpenSourceSection() {
-  const [activeFilter, setActiveFilter] = useState<FilterCategory>("All");
+const ACCENTS: Record<OpenSourceCategory, string> = {
+  PyTensor: "#60a5fa",
+  OpenVINO: "#fb923c",
+  Kestra: "#c084fc",
+};
 
-  const filteredContributions = activeFilter === "All"
+const FILTERS: { label: string; value: Filter }[] = [
+  { label: "All", value: "All" },
+  { label: "PyTensor", value: "PyTensor" },
+  { label: "OpenVINO", value: "OpenVINO" },
+  { label: "Kestra", value: "Kestra" },
+];
+
+interface OpenSourceSectionProps {
+  /** When true, renders a 1-per-category showcase with a "View all contributions" button */
+  isPreview?: boolean;
+}
+
+export default function OpenSourceSection({ isPreview = false }: OpenSourceSectionProps) {
+  const [activeFilter, setActiveFilter] = useState<Filter>("All");
+
+  const contributionsToRender = isPreview
+    ? featuredContributions
+    : activeFilter === "All"
     ? openSourceContributions
     : openSourceContributions.filter((c) => c.category === activeFilter);
 
-  const categories: { label: string; value: FilterCategory }[] = [
-    { label: "All Merged", value: "All" },
-    { label: "PyMC / PyTensor", value: "PyTensor" },
-    { label: "Intel OpenVINO", value: "OpenVINO" },
-    { label: "Kestra Ecosystem", value: "Kestra" },
-  ];
+  const countFor = (value: Filter) =>
+    value === "All"
+      ? openSourceContributions.length
+      : openSourceContributions.filter((c) => c.category === value).length;
 
   return (
-    <section id="open-source" className="w-full py-24 bg-background relative z-10 border-t border-white/5">
+    <section
+      id="open-source"
+      className={isPreview ? "w-full py-28 relative z-10 border-t border-white/5" : "w-full relative z-10"}
+    >
       <div className="max-w-6xl mx-auto px-4 md:px-8">
-        
-        {/* Section Header */}
-        <div className="flex flex-col items-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary font-mono text-xs uppercase tracking-widest mb-4">
-            <GitPullRequest className="w-3.5 h-3.5" />
-            <span>Upstream Engineering</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-foreground tracking-widest uppercase mb-4 text-center">
-            Open Source
-          </h2>
-          <p className="text-foreground/60 text-sm md:text-base font-light text-center max-w-2xl">
-            Selected merged pull requests across mathematical compiler backends, deep learning inference runtimes, and distributed workflow orchestrators.
-          </p>
-        </div>
+        {isPreview && (
+          <SectionHeading
+            eyebrow="Open Source"
+            title="Merged upstream"
+            subtitle="Bug fixes, performance work and new features shipped to PyTensor, OpenVINO and Kestra, each reviewed and merged by the maintainers."
+            icon={<GitPullRequest className="w-3.5 h-3.5" />}
+          />
+        )}
 
-        {/* Highlight Metrics */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto">
-          <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4 flex flex-col items-center text-center">
-            <span className="text-2xl md:text-3xl font-black text-foreground font-mono">15+</span>
-            <span className="text-xs font-mono text-foreground/50 uppercase tracking-wider mt-1">Merged PRs</span>
+        {/* Filter tabs (shown on the full catalog page) */}
+        {!isPreview && (
+          <div
+            role="tablist"
+            aria-label="Filter contributions by project"
+            className="mx-auto mb-10 flex w-fit flex-wrap items-center justify-center gap-1 rounded-full border border-white/10 bg-white/[0.03] p-1"
+          >
+            {FILTERS.map((f) => {
+              const active = activeFilter === f.value;
+              return (
+                <button
+                  key={f.value}
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => setActiveFilter(f.value)}
+                  className={`flex items-center gap-2 rounded-full px-4 py-1.5 font-mono text-xs tracking-wide transition-colors duration-200 ${
+                    active
+                      ? "bg-primary text-black font-semibold"
+                      : "text-foreground/60 hover:text-foreground"
+                  }`}
+                >
+                  {f.label}
+                  <span className={`text-[10px] ${active ? "text-black/60" : "text-foreground/35"}`}>
+                    {countFor(f.value)}
+                  </span>
+                </button>
+              );
+            })}
           </div>
-          <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4 flex flex-col items-center text-center">
-            <div className="flex items-center gap-1.5 text-blue-400 text-sm font-bold font-mono">
-              <Variable className="w-4 h-4" /> PyMC / PyTensor
-            </div>
-            <span className="text-xs font-mono text-foreground/50 uppercase tracking-wider mt-1">Math & Graph Engine</span>
-          </div>
-          <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4 flex flex-col items-center text-center">
-            <div className="flex items-center gap-1.5 text-orange-400 text-sm font-bold font-mono">
-              <Cpu className="w-4 h-4" /> Intel OpenVINO
-            </div>
-            <span className="text-xs font-mono text-foreground/50 uppercase tracking-wider mt-1">Runtime Optimization</span>
-          </div>
-          <div className="bg-zinc-900/40 border border-white/5 rounded-xl p-4 flex flex-col items-center text-center">
-            <div className="flex items-center gap-1.5 text-purple-400 text-sm font-bold font-mono">
-              <Layers className="w-4 h-4" /> Kestra Core & Cloud
-            </div>
-            <span className="text-xs font-mono text-foreground/50 uppercase tracking-wider mt-1">Enterprise Plugins</span>
-          </div>
-        </div>
+        )}
 
-        {/* Filter Navigation */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
-          {categories.map((cat) => (
-            <button
-              key={cat.value}
-              onClick={() => setActiveFilter(cat.value)}
-              className={`px-4 py-2 rounded-lg font-mono text-xs uppercase tracking-wider transition-all duration-300 ${
-                activeFilter === cat.value
-                  ? "bg-primary text-black font-bold shadow-lg shadow-primary/20 scale-105"
-                  : "bg-zinc-900/60 border border-white/5 text-foreground/70 hover:text-foreground hover:border-white/20"
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Curated Contributions Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Compact Contribution Cards Grid */}
+        <div
+          className={`grid gap-5 ${
+            isPreview
+              ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+              : "grid-cols-1 md:grid-cols-2"
+          }`}
+        >
           <AnimatePresence mode="popLayout">
-            {filteredContributions.map((contrib, idx) => (
-              <motion.div
-                key={contrib.id}
-                layout
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.35, delay: idx * 0.05 }}
-                className="group relative flex flex-col justify-between bg-zinc-900/40 border border-white/5 rounded-2xl p-6 md:p-7 overflow-hidden hover:border-primary/50 transition-all duration-300 shadow-lg hover:shadow-primary/5"
-              >
-                {/* Ambient glow accent */}
-                <div className="absolute top-0 right-0 w-40 h-40 bg-primary/5 blur-[60px] rounded-full pointer-events-none group-hover:bg-primary/10 transition-colors" />
+            {contributionsToRender.map((c, idx) => {
+              const accent = ACCENTS[c.category];
+              return (
+                <motion.article
+                  key={c.id}
+                  layout
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.97 }}
+                  transition={{ duration: 0.25, delay: idx * 0.03 }}
+                  style={{ "--accent": accent } as React.CSSProperties}
+                  className="card group relative flex flex-col justify-between overflow-hidden rounded-xl p-5"
+                >
+                  <span
+                    aria-hidden
+                    className="absolute inset-x-0 top-0 h-px opacity-70"
+                    style={{ background: `linear-gradient(90deg, transparent, ${accent}, transparent)` }}
+                  />
 
-                <div>
-                  {/* Top Bar: Repository, Impact Badge, Merged Pill */}
-                  <div className="flex items-center justify-between gap-3 mb-4 flex-wrap">
-                    <a
-                      href={contrib.repoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 text-xs font-mono font-medium text-foreground/80 hover:text-primary transition-colors"
-                    >
-                      <FaGithub className="w-4 h-4 text-foreground/60" />
-                      <span>{contrib.repo}</span>
-                    </a>
-
-                    <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20">
-                        {contrib.impactBadge}
-                      </span>
-                      <span className="flex items-center gap-1 text-[11px] font-mono font-semibold px-2.5 py-0.5 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30">
-                        <GitMerge className="w-3 h-3 text-purple-400" />
-                        Merged
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="text-lg md:text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors leading-snug">
-                    <a
-                      href={contrib.prUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:underline"
-                    >
-                      {contrib.title}
-                    </a>
-                  </h3>
-
-                  {/* High-level Headline */}
-                  <p className="text-xs font-mono text-primary/80 mb-5 leading-relaxed">
-                    {contrib.headline}
-                  </p>
-
-                  {/* Technical Analysis Cards */}
-                  <div className="flex flex-col gap-3 mb-6">
-                    <div className="bg-black/30 border border-white/5 rounded-lg p-3 text-xs leading-relaxed">
-                      <div className="flex items-center gap-1.5 text-amber-400/90 font-mono font-semibold mb-1">
-                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                        <span>Root Problem</span>
-                      </div>
-                      <p className="text-foreground/70 font-light">
-                        {contrib.problem}
-                      </p>
-                    </div>
-
-                    <div className="bg-black/30 border border-white/5 rounded-lg p-3 text-xs leading-relaxed">
-                      <div className="flex items-center gap-1.5 text-emerald-400/90 font-mono font-semibold mb-1">
-                        <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
-                        <span>Technical Fix & Impact</span>
-                      </div>
-                      <p className="text-foreground/70 font-light">
-                        {contrib.solution}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  {/* Technology Tags */}
-                  <div className="flex flex-wrap gap-1.5 mb-6">
-                    {contrib.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="text-[11px] font-mono px-2 py-0.5 bg-white/5 text-foreground/70 border border-white/5 rounded"
+                  <div>
+                    {/* Meta row: Repo + Kind + Merged Badge */}
+                    <div className="mb-3 flex items-center justify-between gap-2">
+                      <a
+                        href={c.repoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex min-w-0 items-center gap-1.5 font-mono text-[11px] text-foreground/60 transition-colors hover:text-foreground"
                       >
-                        {tech}
-                      </span>
-                    ))}
+                        <FaGithub className="h-3.5 w-3.5 shrink-0" />
+                        <span className="truncate">{c.repo}</span>
+                      </a>
+                      <div className="flex shrink-0 items-center gap-1.5">
+                        <span
+                          className="rounded px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-wider"
+                          style={{ color: accent, backgroundColor: `${accent}15` }}
+                        >
+                          {c.kind}
+                        </span>
+                        <span className="flex items-center gap-1 rounded-full border border-purple-500/30 bg-purple-500/10 px-2 py-0.5 font-mono text-[10px] text-purple-300">
+                          <GitMerge className="h-2.5 w-2.5" />
+                          Merged
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-base font-bold leading-snug text-foreground">
+                      <a
+                        href={c.prUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="transition-colors hover:text-primary"
+                      >
+                        {c.title}
+                      </a>
+                    </h3>
+
+                    {/* Summary */}
+                    <p className="mt-1.5 text-xs font-light leading-relaxed text-foreground/70">
+                      {c.summary}
+                    </p>
+
+                    {/* Compact Problem / Fix Box */}
+                    <div className="mt-3.5 space-y-1.5 rounded-lg border border-white/5 bg-white/[0.02] p-2.5 text-xs">
+                      <div className="flex items-start gap-1.5">
+                        <span className="shrink-0 font-mono text-[9px] font-semibold uppercase tracking-wider text-amber-400/90 pt-0.5">
+                          Problem
+                        </span>
+                        <p className="line-clamp-2 text-[11.5px] leading-relaxed text-foreground/60">
+                          {c.problem}
+                        </p>
+                      </div>
+                      <div className="flex items-start gap-1.5">
+                        <span className="shrink-0 font-mono text-[9px] font-semibold uppercase tracking-wider text-emerald-400/90 pt-0.5">
+                          Fix
+                        </span>
+                        <p className="line-clamp-2 text-[11.5px] leading-relaxed text-foreground/60">
+                          {c.fix}
+                        </p>
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Action Link */}
-                  <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                    <span className="text-[11px] font-mono text-foreground/40">
-                      {contrib.date}
-                    </span>
+                  {/* Footer */}
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-white/5 pt-3">
+                    <div className="flex flex-wrap gap-1">
+                      {c.technologies.map((t) => (
+                        <span
+                          key={t}
+                          className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-[10px] text-foreground/55"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
                     <a
-                      href={contrib.prUrl}
+                      href={c.prUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-xs font-mono text-primary hover:text-primary/80 transition-colors uppercase tracking-wider font-semibold"
+                      className="inline-flex items-center gap-1 font-mono text-[11px] text-foreground/50 transition-colors hover:text-primary"
                     >
-                      <span>PR #{contrib.prNumber}</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
+                      <time dateTime={c.mergedOn}>{formatMergedDate(c.mergedOn)}</time>
+                      <span className="text-foreground/20">·</span>
+                      <span>#{c.prNumber}</span>
+                      <ExternalLink className="h-2.5 w-2.5" />
                     </a>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.article>
+              );
+            })}
           </AnimatePresence>
         </div>
 
-        {/* Clean GitHub Link */}
-        <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-zinc-900/30 border border-white/5 rounded-xl">
-          <div className="flex items-center gap-3">
-            <FaGithub className="w-5 h-5 text-foreground/70" />
-            <p className="text-xs font-mono text-foreground/70">
-              Active open source contributor across PyTensor, OpenVINO, Kestra, MNE-Python, and Clad.
-            </p>
+        {/* Action button / Footer */}
+        {isPreview ? (
+          <div className="mt-12 flex justify-center">
+            <Link
+              href="/contributions"
+              className="px-6 py-2.5 bg-white/5 border border-white/10 hover:border-primary/50 text-foreground font-mono tracking-widest uppercase text-xs rounded-lg transition-all duration-300 hover:bg-white/10"
+            >
+              View all {openSourceContributions.length} contributions
+            </Link>
           </div>
-          <a
-            href="https://github.com/pulls?q=is%3Apr+author%3AADITYASINGH1206"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 bg-white/5 border border-white/10 hover:border-primary/50 text-foreground font-mono text-xs uppercase tracking-widest rounded-lg transition-all hover:bg-white/10 flex items-center gap-2 shrink-0"
-          >
-            <span>All PRs on GitHub</span>
-            <ExternalLink className="w-3.5 h-3.5" />
-          </a>
-        </div>
-
+        ) : (
+          <div className="mt-12 flex flex-col items-center justify-between gap-4 rounded-2xl border border-white/5 bg-white/[0.02] p-5 sm:flex-row">
+            <p className="text-center font-mono text-xs text-foreground/55 sm:text-left">
+              15+ merged PRs in total, including MNE-Python and Clad.
+            </p>
+            <a
+              href="https://github.com/pulls?q=is%3Apr+author%3AADITYASINGH1206"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex shrink-0 items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 font-mono text-xs uppercase tracking-widest text-foreground transition-all hover:border-primary/50 hover:bg-white/10"
+            >
+              All PRs on GitHub
+              <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          </div>
+        )}
       </div>
     </section>
   );

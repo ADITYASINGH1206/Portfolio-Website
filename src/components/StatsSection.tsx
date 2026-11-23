@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { motion, useMotionValue, useTransform, animate, useInView } from "framer-motion";
 import { Target } from "lucide-react";
 import { SiLeetcode } from "react-icons/si";
+import SectionHeading from "@/components/SectionHeading";
 
 // Dynamically import GitHubCalendar to prevent SSR hydration mismatches (timezone/date differences)
 const GitHubCalendar = dynamic(
@@ -78,19 +79,15 @@ export default function StatsSection() {
   const LEETCODE_PROFILE_URL = "https://leetcode.com/u/adityasingh1206/";
 
   return (
-    <section className="w-full py-24 bg-background relative z-10 border-t border-white/5">
+    <section id="stats" className="w-full py-28 relative z-10 border-t border-white/5">
       <div className="max-w-6xl mx-auto px-4 md:px-8">
-        <div className="flex flex-col items-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-foreground tracking-widest uppercase mb-4 text-center">
-            Stats & Contributions
-          </h2>
-        </div>
+        <SectionHeading eyebrow="Consistency" title="Coding activity" subtitle="Daily commits on GitHub and live LeetCode numbers." />
 
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-8">
           {/* GitHub Heatmap - Top Section */}
-          <div className="w-full bg-zinc-900/40 border border-white/5 rounded-2xl p-6 md:p-10 flex flex-col items-center justify-center hover:border-primary/50 transition-colors">
-            <h3 className="text-xl font-mono tracking-widest text-foreground/70 uppercase mb-8 self-start md:self-center">
-              GitHub Heatmap
+          <div className="card w-full rounded-2xl p-6 md:p-10 flex flex-col items-center justify-center">
+            <h3 className="text-xs font-mono tracking-[0.2em] text-foreground/50 uppercase mb-8 self-start md:self-center">
+              GitHub contributions
             </h3>
 
             {/* Wrapping in a container that scales down on smaller screens to prevent scrolling */}
@@ -115,7 +112,7 @@ export default function StatsSection() {
               href={LEETCODE_PROFILE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col items-center justify-center bg-zinc-900/40 border border-white/5 rounded-2xl p-8 relative overflow-hidden group hover:border-[#FFA116]/50 transition-colors cursor-pointer"
+              className="flex flex-col items-center justify-center card rounded-2xl p-8 relative overflow-hidden group cursor-pointer [--accent:#FFA116]"
               aria-label="View Aditya's LeetCode Profile: Problems Solved"
             >
               {/* Ambient glow per card */}
@@ -141,7 +138,7 @@ export default function StatsSection() {
               href={LEETCODE_PROFILE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col items-center justify-center bg-zinc-900/40 border border-white/5 rounded-2xl p-8 relative overflow-hidden group hover:border-orange-500/50 transition-colors cursor-pointer"
+              className="flex flex-col items-center justify-center card rounded-2xl p-8 relative overflow-hidden group cursor-pointer [--accent:#f97316]"
               aria-label="View Aditya's LeetCode Profile: Contest Rating"
             >
               {/* Ambient glow per card */}

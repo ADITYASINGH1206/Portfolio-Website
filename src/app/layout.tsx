@@ -14,7 +14,8 @@ const firaCode = Fira_Code({
 
 export const metadata: Metadata = {
   title: "Aditya Kumar Singh | Portfolio",
-  description: "Highly interactive developer portfolio",
+  description:
+    "Aditya Kumar Singh: software developer working across AI, data science and quant. Open-source contributor to PyTensor, OpenVINO and Kestra.",
 };
 
 export default function RootLayout({

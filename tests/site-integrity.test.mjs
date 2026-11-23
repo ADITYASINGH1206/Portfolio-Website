@@ -65,6 +65,8 @@ test("Core Application Routes & Components", async (t) => {
   const requiredFiles = [
     "src/app/page.tsx",
     "src/app/projects/page.tsx",
+    "src/app/contributions/page.tsx",
+    "src/app/open-source/page.tsx",
     "src/app/api/leetcode/route.ts",
     "src/components/ExperienceScroll.tsx",
     "src/components/ProjectsGrid.tsx",
@@ -130,6 +132,7 @@ test("Open Source Section & GitHub Contributions Integrity", async () => {
 
   const content = fs.readFileSync(openSourceFilePath, "utf8");
   assert.ok(content.includes("openSourceContributions"), "Must export openSourceContributions array");
+  assert.ok(content.includes("featuredContributions"), "Must export featuredContributions preview array");
   assert.ok(content.includes("pymc-devs/pytensor"), "Must feature PyTensor contribution");
   assert.ok(content.includes("openvinotoolkit/openvino"), "Must feature OpenVINO contribution");
   assert.ok(content.includes("kestra-io/kestra"), "Must feature Kestra core contribution");
@@ -140,4 +143,9 @@ test("Open Source Section & GitHub Contributions Integrity", async () => {
   const pagePath = path.join(ROOT_DIR, "src/app/page.tsx");
   const pageContent = fs.readFileSync(pagePath, "utf8");
   assert.ok(pageContent.includes("OpenSourceSection"), "Home page must include OpenSourceSection");
+
+  const sectionPath = path.join(ROOT_DIR, "src/components/OpenSourceSection.tsx");
+  const sectionContent = fs.readFileSync(sectionPath, "utf8");
+  assert.ok(sectionContent.includes("/contributions"), "OpenSourceSection must link to /contributions");
+  assert.ok(sectionContent.includes("featuredContributions"), "OpenSourceSection must reference featuredContributions");
 });
