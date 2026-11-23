@@ -28,7 +28,7 @@ export default function Home() {
       <ExperienceScroll />
 
       {/* Projects Grid Section */}
-      <section id="projects" className="w-full py-28 relative z-10">
+      <section id="projects" className="w-full py-28 relative z-10 scroll-mt-24">
         <SectionHeading
           eyebrow="Selected work"
           title="Projects"
@@ -53,7 +53,7 @@ export default function Home() {
       <StatsSection />
 
       {/* Comprehensive Tech Stack Section */}
-      <section id="tech-stack" className="w-full pb-24 relative z-10">
+      <section id="tech-stack" className="w-full pb-24 relative z-10 scroll-mt-24">
         <TechStack />
       </section>
 

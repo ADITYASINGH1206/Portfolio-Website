@@ -85,7 +85,7 @@ export default function ExperienceScroll() {
   const activeExp = experiences[activeIndex];
 
   return (
-    <div id="experience" ref={containerRef} className="relative h-[260vh] w-full">
+    <div id="experience" ref={containerRef} className="relative h-[260vh] w-full scroll-mt-24">
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden max-w-6xl mx-auto px-4 md:px-12 relative">
         
         {/* ================= BACKGROUND COMPANY LOGO ANIMATION LAYER ================= */}

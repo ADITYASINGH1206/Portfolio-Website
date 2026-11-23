@@ -27,7 +27,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="relative w-full overflow-hidden border-t border-white/5 py-28">
+    <section id="contact" className="relative w-full overflow-hidden border-t border-white/5 py-28 scroll-mt-24">
       <div className="mx-auto max-w-6xl px-6 md:px-12">
         <div className="grid grid-cols-1 gap-16 md:grid-cols-2 md:gap-12">
           <motion.div

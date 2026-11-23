@@ -1,14 +1,30 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const links = [
-  { label: "Experience", href: "/#experience" },
-  { label: "Projects", href: "/#projects" },
-  { label: "Open Source", href: "/#open-source" },
-  { label: "Contact", href: "/#contact" },
+  { label: "Experience", href: "/#experience", targetId: "experience" },
+  { label: "Projects", href: "/#projects", targetId: "projects" },
+  { label: "Open Source", href: "/#open-source", targetId: "open-source" },
+  { label: "Contact", href: "/#contact", targetId: "contact" },
 ];
 
 export default function TopNav() {
+  const pathname = usePathname();
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string, href: string) => {
+    if (pathname === "/") {
+      e.preventDefault();
+      const el = document.getElementById(targetId);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+        window.history.pushState(null, "", href);
+      }
+    }
+  };
+
   return (
     <nav
       aria-label="Primary"
@@ -16,7 +32,14 @@ export default function TopNav() {
     >
       <Link
         href="/"
-        className="hidden sm:flex h-8 w-8 items-center justify-center rounded-full bg-primary/15 font-mono text-xs font-bold text-primary"
+        onClick={(e) => {
+          if (pathname === "/") {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            window.history.pushState(null, "", "/");
+          }
+        }}
+        className="hidden sm:flex h-8 w-8 items-center justify-center rounded-full bg-primary/15 font-mono text-xs font-bold text-primary transition-transform hover:scale-105"
         aria-label="Home"
       >
         AS
@@ -27,6 +50,7 @@ export default function TopNav() {
           <li key={l.href}>
             <Link
               href={l.href}
+              onClick={(e) => handleNavClick(e, l.targetId, l.href)}
               className="rounded-full px-3.5 py-1.5 font-mono text-xs text-foreground/60 transition-colors hover:bg-white/5 hover:text-foreground"
             >
               {l.label}

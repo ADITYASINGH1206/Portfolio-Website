@@ -63,12 +63,22 @@ export default function HeroScroll() {
                   <div className="mt-8 flex flex-wrap justify-center md:justify-start gap-3">
                     <Link
                       href="/#projects"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+                        window.history.pushState(null, "", "/#projects");
+                      }}
                       className="rounded-lg bg-primary px-5 py-2.5 font-mono text-xs font-bold uppercase tracking-widest text-black transition-opacity hover:opacity-90"
                     >
                       View projects
                     </Link>
                     <Link
                       href="/#open-source"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById("open-source")?.scrollIntoView({ behavior: "smooth" });
+                        window.history.pushState(null, "", "/#open-source");
+                      }}
                       className="rounded-lg border border-white/15 px-5 py-2.5 font-mono text-xs uppercase tracking-widest text-foreground/80 transition-colors hover:border-primary/50 hover:text-foreground"
                     >
                       Open source
