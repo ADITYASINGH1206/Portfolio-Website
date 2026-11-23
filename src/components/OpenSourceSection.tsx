@@ -42,11 +42,6 @@ export default function OpenSourceSection({ isPreview = false }: OpenSourceSecti
     ? openSourceContributions
     : openSourceContributions.filter((c) => c.category === activeFilter);
 
-  const countFor = (value: Filter) =>
-    value === "All"
-      ? openSourceContributions.length
-      : openSourceContributions.filter((c) => c.category === value).length;
-
   return (
     <section
       id="open-source"
@@ -84,9 +79,6 @@ export default function OpenSourceSection({ isPreview = false }: OpenSourceSecti
                   }`}
                 >
                   {f.label}
-                  <span className={`text-[10px] ${active ? "text-black/60" : "text-foreground/35"}`}>
-                    {countFor(f.value)}
-                  </span>
                 </button>
               );
             })}
@@ -222,7 +214,7 @@ export default function OpenSourceSection({ isPreview = false }: OpenSourceSecti
               href="/contributions"
               className="px-6 py-2.5 bg-white/5 border border-white/10 hover:border-primary/50 text-foreground font-mono tracking-widest uppercase text-xs rounded-lg transition-all duration-300 hover:bg-white/10"
             >
-              View all {openSourceContributions.length} contributions
+              Show all open source
             </Link>
           </div>
         ) : (
